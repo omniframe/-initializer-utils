@@ -1,6 +1,6 @@
 {
 	"name": "@initializer-utils/typedoc-theme",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "A custom TypeDoc theme for @initializer-utils/core",
 	"author": "Omniframe Foundation, Inc. <engineering@omniframe.org>",
 	"homepage": "https://wwww.omniframe.org",

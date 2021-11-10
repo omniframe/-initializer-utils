@@ -68,6 +68,7 @@ export const header = (context: CustomThemeRenderContext, props: PageEvent<Refle
         {!!props.model.parent && <ul class="tsd-breadcrumb">{context.breadcrumb(props.model)}</ul>}
         <h1>
           {props.model.kindString !== 'Project' && `${props.model.kindString ?? ''} `}
+          {props.model.kindString === 'Project' && '📦 '}
           {props.model.name}
           {hasTypeParameters(props.model) && (
             <>
