@@ -1,4 +1,3 @@
-import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 import {
   JSX,
   LiteralType,
@@ -10,6 +9,7 @@ import {
   TypeKindMap,
 } from 'typedoc';
 import { join, stringify } from 'typedoc/dist/lib/output/themes/lib';
+import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
 type TypeInlinePartialsOptions = { needsParens?: boolean };
 

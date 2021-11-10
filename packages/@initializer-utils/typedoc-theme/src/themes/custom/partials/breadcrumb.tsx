@@ -1,4 +1,4 @@
-import type { JSX, Reflection } from 'typedoc';
+import { JSX, Reflection } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
 export const breadcrumb = (context: CustomThemeRenderContext, props: Reflection): JSX.Element | undefined =>

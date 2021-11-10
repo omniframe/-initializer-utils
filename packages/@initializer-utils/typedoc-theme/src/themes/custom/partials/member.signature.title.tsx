@@ -1,4 +1,4 @@
-import type { SignatureReflection } from 'typedoc';
+import { JSX, SignatureReflection } from 'typedoc';
 import { join, wbr } from 'typedoc/dist/lib/output/themes/lib';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 

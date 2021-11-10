@@ -1,4 +1,4 @@
-import { ContainerReflection, DeclarationReflection, ReflectionType, PageEvent } from 'typedoc';
+import { ContainerReflection, DeclarationReflection, JSX, ReflectionType, PageEvent } from 'typedoc';
 import { hasTypeParameters } from 'typedoc/dist/lib/output/themes/lib';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 

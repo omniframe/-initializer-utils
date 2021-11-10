@@ -1,4 +1,4 @@
-import { DeclarationReflection, ReflectionType } from 'typedoc';
+import { DeclarationReflection, JSX, ReflectionType } from 'typedoc';
 import { join, wbr } from 'typedoc/dist/lib/output/themes/lib';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 

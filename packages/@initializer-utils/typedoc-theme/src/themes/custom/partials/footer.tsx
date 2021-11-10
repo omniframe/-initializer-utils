@@ -1,4 +1,4 @@
-import { PageEvent, Reflection } from 'typedoc';
+import { JSX, PageEvent, Reflection } from 'typedoc';
 import { classNames } from 'typedoc/dist/lib/output/themes/lib';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 

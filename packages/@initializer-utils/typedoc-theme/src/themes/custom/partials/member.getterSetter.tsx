@@ -1,4 +1,4 @@
-import type { DeclarationReflection } from 'typedoc';
+import { DeclarationReflection, JSX } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
 export const memberGetterSetter = (context: CustomThemeRenderContext, props: DeclarationReflection) => (

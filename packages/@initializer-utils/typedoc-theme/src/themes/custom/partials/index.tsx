@@ -1,4 +1,4 @@
-import { ContainerReflection, ReflectionCategory } from 'typedoc';
+import { ContainerReflection, JSX, ReflectionCategory } from 'typedoc';
 import { wbr } from 'typedoc/dist/lib/output/themes/lib';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
@@ -62,4 +62,6 @@ export function index(context: CustomThemeRenderContext, props: ContainerReflect
       </section>
     );
   }
+
+  return undefined;
 }

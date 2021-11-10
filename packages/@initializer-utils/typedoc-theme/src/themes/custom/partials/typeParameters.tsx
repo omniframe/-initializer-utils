@@ -1,4 +1,4 @@
-import type { TypeParameterReflection } from 'typedoc';
+import { JSX, TypeParameterReflection } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
 export function typeParameters(context: CustomThemeRenderContext, typeParameters: ReadonlyArray<TypeParameterReflection>) {

@@ -1,4 +1,4 @@
-import type { DeclarationReflection, SignatureReflection } from 'typedoc';
+import { DeclarationReflection, JSX, SignatureReflection } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
 export const memberSources = (

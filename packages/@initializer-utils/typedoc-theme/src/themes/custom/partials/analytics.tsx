@@ -1,3 +1,4 @@
+import { JSX } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
 export function analytics(context: CustomThemeRenderContext) {

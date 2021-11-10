@@ -1,4 +1,4 @@
-import type { ContainerReflection } from 'typedoc';
+import { ContainerReflection, JSX } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
 export function members(context: CustomThemeRenderContext, props: ContainerReflection) {

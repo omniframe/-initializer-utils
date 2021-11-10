@@ -1,11 +1,11 @@
-import type { PageEvent, Reflection } from 'typedoc';
+import { JSX, PageEvent, Reflection } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
 export const defaultLayout = (context: CustomThemeRenderContext, props: PageEvent<Reflection>) => (
   <html class="default no-js">
     <head>
       <meta charSet="utf-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta http-equiv="x-ua-compatible" content="IE=edge" />
       <title>
         {props.model.name === props.project.name ? (
           props.project.name

@@ -29,53 +29,53 @@ interface SearchState {
 }
 
 export function initSearch() {
-  const searchEl = document.getElementById("tsd-search");
+  const searchEl = document.getElementById('tsd-search');
   if (!searchEl) return;
 
   const searchScript = document.getElementById(
-    "search-script"
+    'search-script'
   ) as HTMLScriptElement | null;
-  searchEl.classList.add("loading");
+  searchEl.classList.add('loading');
   if (searchScript) {
-    searchScript.addEventListener("error", () => {
-      searchEl.classList.remove("loading");
-      searchEl.classList.add("failure");
+    searchScript.addEventListener('error', () => {
+      searchEl.classList.remove('loading');
+      searchEl.classList.add('failure');
     });
-    searchScript.addEventListener("load", () => {
-      searchEl.classList.remove("loading");
-      searchEl.classList.add("ready");
+    searchScript.addEventListener('load', () => {
+      searchEl.classList.remove('loading');
+      searchEl.classList.add('ready');
     });
     if (window.searchData) {
-      searchEl.classList.remove("loading");
+      searchEl.classList.remove('loading');
     }
   }
 
-  const field = document.querySelector<HTMLInputElement>("#tsd-search input");
-  const results = document.querySelector<HTMLElement>("#tsd-search .results");
+  const field = document.querySelector<HTMLInputElement>('#tsd-search input');
+  const results = document.querySelector<HTMLElement>('#tsd-search .results');
 
   if (!field || !results) {
     throw new Error(
-      "The input field or the result list wrapper was not found"
+      'The input field or the result list wrapper was not found'
     );
   }
 
   let resultClicked = false;
-  results.addEventListener("mousedown", () => (resultClicked = true));
-  results.addEventListener("mouseup", () => {
+  results.addEventListener('mousedown', () => (resultClicked = true));
+  results.addEventListener('mouseup', () => {
     resultClicked = false;
-    searchEl.classList.remove("has-focus");
+    searchEl.classList.remove('has-focus');
   });
 
-  field.addEventListener("focus", () => searchEl.classList.add("has-focus"));
-  field.addEventListener("blur", () => {
+  field.addEventListener('focus', () => searchEl.classList.add('has-focus'));
+  field.addEventListener('blur', () => {
     if (!resultClicked) {
       resultClicked = false;
-      searchEl.classList.remove("has-focus");
+      searchEl.classList.remove('has-focus');
     }
   });
 
   const state: SearchState = {
-    base: searchEl.dataset["base"] + "/",
+    base: `${searchEl.dataset['base']}/`,
   };
 
   bindEvents(searchEl, results, field, state);
@@ -88,37 +88,37 @@ function bindEvents(
   state: SearchState
 ) {
   field.addEventListener(
-    "input",
+    'input',
     debounce(() => {
       updateResults(searchEl, results, field, state);
     }, 200)
   );
 
   let preventPress = false;
-  field.addEventListener("keydown", (e) => {
+  field.addEventListener('keydown', (e) => {
     preventPress = true;
-    if (e.key == "Enter") {
+    if (e.key == 'Enter') {
       gotoCurrentResult(results, field);
-    } else if (e.key == "Escape") {
+    } else if (e.key == 'Escape') {
       field.blur();
-    } else if (e.key == "ArrowUp") {
+    } else if (e.key == 'ArrowUp') {
       setCurrentResult(results, -1);
-    } else if (e.key === "ArrowDown") {
+    } else if (e.key === 'ArrowDown') {
       setCurrentResult(results, 1);
     } else {
       preventPress = false;
     }
   });
-  field.addEventListener("keypress", (e) => {
+  field.addEventListener('keypress', (e) => {
     if (preventPress) e.preventDefault();
   });
 
   /**
    * Start searching by pressing slash.
    */
-  document.body.addEventListener("keydown", (e) => {
+  document.body.addEventListener('keydown', (e) => {
     if (e.altKey || e.ctrlKey || e.metaKey) return;
-    if (!field.matches(":focus") && e.key === "/") {
+    if (!field.matches(':focus') && e.key === '/') {
       field.focus();
       e.preventDefault();
     }
@@ -129,8 +129,8 @@ function checkIndex(state: SearchState, searchEl: HTMLElement) {
   if (state.index) return;
 
   if (window.searchData) {
-    searchEl.classList.remove("loading");
-    searchEl.classList.add("ready");
+    searchEl.classList.remove('loading');
+    searchEl.classList.add('ready');
     state.data = window.searchData;
     state.index = Index.load(window.searchData.index);
   }
@@ -147,14 +147,14 @@ function updateResults(
   // because loading or error message can be removed.
   if (!state.index || !state.data) return;
 
-  results.textContent = "";
+  results.textContent = '';
 
   const searchText = query.value.trim();
 
   // Perform a wildcard search
   const res = state.index.search(`*${searchText}*`);
 
-  for (let i = 0, c = Math.min(10, res instanceof Array && res.length); i < c; i++) {
+  for (let i = 0, c = Math.min(10, res.length); i < c; i++) {
     const row = state.data.rows[Number(res[i].ref)];
 
     // Bold the matched part of the query in the search results
@@ -166,12 +166,12 @@ function updateResults(
       )}.</span>${name}`;
     }
 
-    const item = document.createElement("li");
+    const item = document.createElement('li');
     item.classList.value = row.classes;
 
-    const anchor = document.createElement("a");
+    const anchor = document.createElement('a');
     anchor.href = state.base + row.url;
-    anchor.classList.add("tsd-kind-icon");
+    anchor.classList.add('tsd-kind-icon');
     anchor.innerHTML = name;
     item.append(anchor);
 
@@ -183,16 +183,16 @@ function updateResults(
  * Move the highlight within the result set.
  */
 function setCurrentResult(results: HTMLElement, dir: number) {
-  let current = results.querySelector(".current");
+  let current = results.querySelector('.current');
   if (!current) {
     current = results.querySelector(
-      dir == 1 ? "li:first-child" : "li:last-child"
+      dir == 1 ? 'li:first-child' : 'li:last-child'
     );
     if (current) {
-      current.classList.add("current");
+      current.classList.add('current');
     }
   } else {
-    let rel: Element | undefined = current;
+    let rel: Element | undefined | null = current;
     // Tricky: We have to check that rel has an offsetParent so that users can't mark a hidden result as
     // current with the arrow keys.
     if (dir === 1) {
@@ -206,8 +206,8 @@ function setCurrentResult(results: HTMLElement, dir: number) {
     }
 
     if (rel) {
-      current.classList.remove("current");
-      rel.classList.add("current");
+      current.classList.remove('current');
+      rel.classList.add('current');
     }
   }
 }
@@ -216,14 +216,14 @@ function setCurrentResult(results: HTMLElement, dir: number) {
  * Navigate to the highlighted result.
  */
 function gotoCurrentResult(results: HTMLElement, field: HTMLInputElement) {
-  let current = results.querySelector(".current");
+  let current = results.querySelector('.current');
 
   if (!current) {
-    current = results.querySelector("li:first-child");
+    current = results.querySelector('li:first-child');
   }
 
   if (current) {
-    const link = current.querySelector("a");
+    const link = current.querySelector('a');
     if (link) {
       window.location.href = link.href;
     }
@@ -232,7 +232,7 @@ function gotoCurrentResult(results: HTMLElement, field: HTMLInputElement) {
 }
 
 function boldMatches(text: string, search: string) {
-  if (search === "") {
+  if (search === '') {
       return text;
   }
 
@@ -260,11 +260,11 @@ function boldMatches(text: string, search: string) {
 }
 
 const SPECIAL_HTML = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  "'": "&#039;",
-  '"': "&quot;",
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '\'': '&#039;',
+  '"': '&quot;',
 } as const;
 
 function escapeHtml(text: string) {

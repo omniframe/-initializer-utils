@@ -1,4 +1,4 @@
-import type { ReferenceReflection } from 'typedoc';
+import { JSX, ReferenceReflection } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
 export const memberReference = ({ urlTo }: CustomThemeRenderContext, props: ReferenceReflection) => {

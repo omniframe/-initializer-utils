@@ -1,4 +1,4 @@
-import type { ReflectionGroup } from 'typedoc';
+import { JSX, ReflectionGroup } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
 export function membersGroup(context: CustomThemeRenderContext, group: ReflectionGroup) {
