@@ -1,0 +1,19 @@
+{
+  "name": "@initializer-utils/packages",
+  "version": "0.0.1",
+  "description": "A utility library for NPM initializer packages.",
+	"author": "Omniframe Foundation, Inc. <engineering@omniframe.org>",
+	"homepage": "https://wwww.omniframe.org",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/omniframe/initializer-utils.git"
+	},
+	"bugs": {
+		"url": "https://github.com/omniframe/initializer-utils/issues"
+	},
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

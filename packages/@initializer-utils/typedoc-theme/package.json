@@ -1,0 +1,81 @@
+{
+	"name": "@initializer-utils/typedoc-theme",
+	"version": "0.0.3",
+	"description": "A custom TypeDoc theme for @initializer-utils/core",
+	"author": "Omniframe Foundation, Inc. <engineering@omniframe.org>",
+	"homepage": "https://wwww.omniframe.org",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/omniframe/initializer-utils.git"
+	},
+	"bugs": {
+		"url": "https://github.com/omniframe/initializer-utils/issues"
+	},
+	"keywords": [
+		"typedocplugin"
+	],
+	"main": "./dist/index.js",
+	"module": "./src/index.ts",
+	"typings": "./dist/index.d.ts",
+	"scripts": {
+		"build": "NODE_ENV=production rm -rf ./dist && tsc -P tsconfig.json",
+		"lint": "eslint ./src/* --ext=ts --fix"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@types/node": "^16.11.7",
+		"typedoc": "^0.22.8",
+		"typescript": "^4.4.4"
+	},
+	"peerDependencies": {
+		"typedoc": "0.22.x"
+	},
+	"eslintConfig": {
+		"extends": [
+			"./index.js"
+		],
+		"rules": {
+			"import/export": "off",
+			"sort-imports": "off",
+			"sort-keys": "off"
+		}
+	},
+	"eslintIgnore": [
+		"dist/",
+		"*.spec.ts"
+	],
+	"prettier": {
+		"semi": true,
+		"trailingComma": "all",
+		"singleQuote": true,
+		"printWidth": 80,
+		"tabWidth": 2,
+		"useTabs": true,
+		"overrides": [
+			{
+				"files": "*.spec.js",
+				"options": {
+					"semi": true
+				}
+			}
+		]
+	},
+	"jest": {
+		"roots": [
+			"<rootDir>/src"
+		],
+		"testMatch": [
+			"**/__tests__/**/*.ts",
+			"**/?*.spec.ts"
+		],
+		"transform": {
+			"^.+\\.ts$": "ts-jest"
+		}
+	},
+	"husky": {
+		"hooks": {
+			"pre-publish": "npm run build"
+		}
+	}
+}
