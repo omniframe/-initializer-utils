@@ -1,7 +1,10 @@
 import { DeclarationReflection, JSX } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
-export const memberGetterSetter = (context: CustomThemeRenderContext, props: DeclarationReflection) => (
+export const memberGetterSetter = (
+  context: CustomThemeRenderContext,
+  props: DeclarationReflection,
+) => (
   <>
     <ul class={"tsd-signatures " + props.cssClasses}>
       {!!props.getSignature && (

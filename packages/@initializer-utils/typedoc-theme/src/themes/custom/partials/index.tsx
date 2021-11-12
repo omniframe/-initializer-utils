@@ -1,8 +1,12 @@
 import { ContainerReflection, JSX, ReflectionCategory } from 'typedoc';
-import { wbr } from 'typedoc/dist/lib/output/themes/lib';
+import { wbr } from '../copies';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
-function renderCategory({ urlTo }: CustomThemeRenderContext, item: ReflectionCategory, prependName = "") {
+const renderCategory = (
+  { urlTo }: CustomThemeRenderContext,
+  item: ReflectionCategory,
+  prependName = '',
+) => {
   return (
     <section class="tsd-index-section">
       <h3>{prependName ? `${prependName} ${item.title}` : item.title}</h3>
@@ -17,9 +21,12 @@ function renderCategory({ urlTo }: CustomThemeRenderContext, item: ReflectionCat
       </ul>
     </section>
   );
-}
+};
 
-export function index(context: CustomThemeRenderContext, props: ContainerReflection) {
+export const index = (
+  context: CustomThemeRenderContext,
+  props: ContainerReflection,
+) => {
   if (props.categories && props.categories.length) {
     return (
       <section class="tsd-panel-group tsd-index-group">
@@ -64,4 +71,4 @@ export function index(context: CustomThemeRenderContext, props: ContainerReflect
   }
 
   return undefined;
-}
+};

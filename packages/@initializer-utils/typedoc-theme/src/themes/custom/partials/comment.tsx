@@ -1,8 +1,13 @@
 import { JSX, Reflection } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
-export function comment({ markdown }: CustomThemeRenderContext, props: Reflection) {
-  if (!props.comment?.hasVisibleComponent()) return;
+export const comment = (
+  { markdown }: CustomThemeRenderContext,
+  props: Reflection,
+) => {
+  if (!props.comment?.hasVisibleComponent()) {
+    return;
+  }
 
   return (
     <div class="tsd-comment tsd-typography">

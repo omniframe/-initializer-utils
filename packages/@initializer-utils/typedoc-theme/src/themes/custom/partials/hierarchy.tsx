@@ -1,7 +1,10 @@
 import { DeclarationHierarchy, JSX } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
-export const hierarchy = (context: CustomThemeRenderContext, props: DeclarationHierarchy) => (
+export const hierarchy = (
+  context: CustomThemeRenderContext,
+  props: DeclarationHierarchy,
+) => (
   <ul class="tsd-hierarchy">
     {props.types.map((item, i, l) => (
       <li>

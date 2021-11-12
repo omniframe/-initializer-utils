@@ -1,8 +1,11 @@
 import { JSX, PageEvent, Reflection } from 'typedoc';
-import { classNames } from 'typedoc/dist/lib/output/themes/lib';
+import classNames from 'classnames';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
-export function footer(context: CustomThemeRenderContext, props: PageEvent<Reflection>) {
+export const footer = (
+  context: CustomThemeRenderContext,
+  props: PageEvent<Reflection>,
+) => {
   const hideLegend = context.options.getValue('hideLegend');
   const hideGenerator = context.options.getValue('hideGenerator');
 

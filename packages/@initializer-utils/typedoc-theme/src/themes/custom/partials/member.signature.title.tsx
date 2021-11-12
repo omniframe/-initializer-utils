@@ -1,5 +1,5 @@
 import { JSX, SignatureReflection } from 'typedoc';
-import { join, wbr } from 'typedoc/dist/lib/output/themes/lib';
+import { join, wbr } from '../copies';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
 export const memberSignatureTitle = (
@@ -9,7 +9,7 @@ export const memberSignatureTitle = (
 ) => (
   <>
     {!hideName ? (
-      wbr(props.name)
+      wbr( props.name )
     ) : (
       <>
         {props.kindString === 'Constructor signature' && (
@@ -22,29 +22,29 @@ export const memberSignatureTitle = (
     )}
     {!!props.typeParameters && (
       <>
-        {"<"}
-        {join(", ", props.typeParameters, (item) => item.name)}
-        {">"}
+        {'<'}
+        {join( ', ', props.typeParameters, ( item ) => item.name )}
+        {'>'}
       </>
     )}
     <span class="tsd-signature-symbol">(</span>
-    {join(", ", props.parameters ?? [], (item) => (
+    {join( ', ', props.parameters ?? [], ( item ) => (
       <>
         {!!item.flags.isRest && <span class="tsd-signature-symbol">...</span>}
         {item.name}
         <span class="tsd-signature-symbol">
-          {!!item.flags.isOptional && "?"}
-          {!!item.defaultValue && "?"}
-          {": "}
+          {!!item.flags.isOptional && '?'}
+          {!!item.defaultValue && '?'}
+          {': '}
         </span>
-        {context.type(item.type)}
+        {context.type( item.type )}
       </>
-    ))}
+    ) )}
     <span class="tsd-signature-symbol">)</span>
     {!!props.type && (
       <>
-        <span class="tsd-signature-symbol">{arrowStyle ? " => " : ": "}</span>
-        {context.type(props.type)}
+        <span class="tsd-signature-symbol">{arrowStyle ? ' => ' : ': '}</span>
+        {context.type( props.type )}
       </>
     )}
   </>

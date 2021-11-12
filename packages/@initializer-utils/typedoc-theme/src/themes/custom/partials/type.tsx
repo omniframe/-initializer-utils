@@ -8,7 +8,7 @@ import {
   Type,
   TypeKindMap,
 } from 'typedoc';
-import { join, stringify } from 'typedoc/dist/lib/output/themes/lib';
+import { join, stringify } from '../copies';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
 type TypeInlinePartialsOptions = { needsParens?: boolean };
@@ -23,16 +23,16 @@ const EXPORTABLE: ReflectionKind =
 
 const nameCollisionCache = new WeakMap<ProjectReflection, Record<string, number | undefined>>();
 
-function getNameCollisionCount(project: ProjectReflection, name: string): number {
-  let collisions = nameCollisionCache.get(project);
-  if (collisions === undefined) {
+function getNameCollisionCount( project: ProjectReflection, name: string ): number {
+  let collisions = nameCollisionCache.get( project );
+  if ( collisions === undefined ) {
     collisions = {};
-    for (const reflection of project.getReflectionsByKind(EXPORTABLE)) {
-      collisions[reflection.name] = (collisions[reflection.name] ?? 0) + 1;
+    for ( const reflection of project.getReflectionsByKind( EXPORTABLE ) ) {
+      collisions[ reflection.name ] = ( collisions[ reflection.name ] ?? 0 ) + 1;
     }
-    nameCollisionCache.set(project, collisions);
+    nameCollisionCache.set( project, collisions );
   }
-  return collisions[name] ?? 0;
+  return collisions[ name ] ?? 0;
 }
 
 /**
@@ -44,29 +44,29 @@ function getNameCollisionCount(project: ProjectReflection, name: string): number
  * ambiguous (i.e. there are two classes with the same name in different namespaces), then the namespaces path of the
  * reflection will be returned.
  */
-function getUniquePath(reflection: Reflection): Reflection[] {
-  if (reflection.kindOf(EXPORTABLE)) {
-    if (getNameCollisionCount(reflection.project, reflection.name) >= 2) {
-      return getNamespacedPath(reflection);
+function getUniquePath( reflection: Reflection ): Reflection[] {
+  if ( reflection.kindOf( EXPORTABLE ) ) {
+    if ( getNameCollisionCount( reflection.project, reflection.name ) >= 2 ) {
+      return getNamespacedPath( reflection );
     }
   }
-  return [reflection];
+  return [ reflection ];
 }
-function getNamespacedPath(reflection: Reflection): Reflection[] {
-  const path = [reflection];
+function getNamespacedPath( reflection: Reflection ): Reflection[] {
+  const path = [ reflection ];
   let parent = reflection.parent;
-  while (parent && parent.kindOf(ReflectionKind.Namespace)) {
-    path.unshift(parent);
+  while ( parent && parent.kindOf( ReflectionKind.Namespace ) ) {
+    path.unshift( parent );
     parent = parent.parent;
   }
   return path;
 }
-function renderUniquePath(context: CustomThemeRenderContext, reflection: Reflection): JSX.Element {
-  return join(<span class="tsd-signature-symbol">.</span>, getUniquePath(reflection), (item) => (
-    <a href={context.urlTo(item)} class="tsd-signature-type" data-tsd-kind={item.kindString}>
+function renderUniquePath( context: CustomThemeRenderContext, reflection: Reflection ): JSX.Element {
+  return join( <span class="tsd-signature-symbol">.</span>, getUniquePath( reflection ), ( item ) => (
+    <a href={context.urlTo( item )} class="tsd-signature-type" data-tsd-kind={item.kindString}>
       {item.name}
     </a>
-  ));
+  ) );
 }
 
 // The type helper accepts an optional needsParens parameter that is checked
@@ -74,37 +74,37 @@ function renderUniquePath(context: CustomThemeRenderContext, reflection: Reflect
 // 1 | 2[] !== (1 | 2)[]
 // () => 1 | 2 !== (() => 1) | 2
 const typeRenderers: {
-  [K in keyof TypeKindMap]: (
+  [ K in keyof TypeKindMap ]: (
     context: CustomThemeRenderContext,
-    type: TypeKindMap[K],
+    type: TypeKindMap[ K ],
     options: TypeInlinePartialsOptions
   ) => JSX.Element;
 } = {
-  array(context, type) {
+  array( context, type ) {
     return (
       <>
-        {renderType(context, type.elementType, { needsParens: true })}
+        {renderType( context, type.elementType, { needsParens: true } )}
         <span class="tsd-signature-symbol">[]</span>
       </>
     );
   },
-  conditional(context, type, { needsParens }) {
+  conditional( context, type, { needsParens } ) {
     return (
       <>
         {needsParens && <span class="tsd-signature-symbol">(</span>}
-        {renderType(context, type.checkType, { needsParens: true })}
+        {renderType( context, type.checkType, { needsParens: true } )}
         <span class="tsd-signature-symbol"> extends </span>
-        {renderType(context, type.extendsType)}
+        {renderType( context, type.extendsType )}
         <span class="tsd-signature-symbol"> ? </span>
-        {renderType(context, type.trueType)}
+        {renderType( context, type.trueType )}
         <span class="tsd-signature-symbol"> : </span>
-        {renderType(context, type.falseType)}
+        {renderType( context, type.falseType )}
         {needsParens && <span class="tsd-signature-symbol">)</span>}
       </>
     );
   },
-  indexedAccess(context, type) {
-    let indexType: JSX.Element = renderType(context, type.indexType);
+  indexedAccess( context, type ) {
+    let indexType: JSX.Element = renderType( context, type.indexType );
 
     if (
       type.objectType instanceof ReferenceType &&
@@ -112,54 +112,54 @@ const typeRenderers: {
       type.indexType instanceof LiteralType &&
       typeof type.indexType.value === "string"
     ) {
-      const childReflection = type.objectType.reflection.getChildByName([type.indexType.value]);
-      if (childReflection) {
-        indexType = <a href={context.urlTo(childReflection)}>{indexType}</a>;
+      const childReflection = type.objectType.reflection.getChildByName( [ type.indexType.value ] );
+      if ( childReflection ) {
+        indexType = <a href={context.urlTo( childReflection )}>{indexType}</a>;
       }
     }
 
     return (
       <>
-        {renderType(context, type.objectType)}
+        {renderType( context, type.objectType )}
         <span class="tsd-signature-symbol">[</span>
         {indexType}
         <span class="tsd-signature-symbol">]</span>
       </>
     );
   },
-  inferred(_context, type) {
+  inferred( _context, type ) {
     return (
       <>
         <span class="tsd-signature-symbol">infer </span> {type.name}
       </>
     );
   },
-  intersection(context, type, { needsParens }) {
+  intersection( context, type, { needsParens } ) {
     return (
       <>
         {needsParens && <span class="tsd-signature-symbol">(</span>}
-        {join(<span class="tsd-signature-symbol"> & </span>, type.types, (item) =>
-          renderType(context, item, { needsParens: true })
+        {join( <span class="tsd-signature-symbol"> & </span>, type.types, ( item ) =>
+          renderType( context, item, { needsParens: true } )
         )}
         {needsParens && <span class="tsd-signature-symbol">)</span>}
       </>
     );
   },
-  intrinsic(_context, type) {
+  intrinsic( _context, type ) {
     return <span class="tsd-signature-type">{type.name}</span>;
   },
-  literal(_context, type) {
-    return <span class="tsd-signature-type">{stringify(type.value)}</span>;
+  literal( _context, type ) {
+    return <span class="tsd-signature-type">{stringify( type.value )}</span>;
   },
-  mapped(context, type) {
+  mapped( context, type ) {
     const children: JSX.Element[] = [];
 
-    switch (type.readonlyModifier) {
+    switch ( type.readonlyModifier ) {
       case "+":
-        children.push(<span class="tsd-signature-symbol">readonly </span>);
+        children.push( <span class="tsd-signature-symbol">readonly </span> );
         break;
       case "-":
-        children.push(<span class="tsd-signature-symbol">-readonly </span>);
+        children.push( <span class="tsd-signature-symbol">-readonly </span> );
         break;
     }
 
@@ -167,27 +167,27 @@ const typeRenderers: {
       <span class="tsd-signature-symbol">[ </span>,
       <span class="tsd-signature-type">{type.parameter}</span>,
       <span class="tsd-signature-symbol"> in </span>,
-      renderType(context, type.parameterType)
+      renderType( context, type.parameterType )
     );
 
-    if (type.nameType) {
-      children.push(<span class="tsd-signature-symbol"> as </span>, renderType(context, type.nameType));
+    if ( type.nameType ) {
+      children.push( <span class="tsd-signature-symbol"> as </span>, renderType( context, type.nameType ) );
     }
 
-    children.push(<span class="tsd-signature-symbol">]</span>);
+    children.push( <span class="tsd-signature-symbol">]</span> );
 
-    switch (type.optionalModifier) {
+    switch ( type.optionalModifier ) {
       case "+":
-        children.push(<span class="tsd-signature-symbol">?: </span>);
+        children.push( <span class="tsd-signature-symbol">?: </span> );
         break;
       case "-":
-        children.push(<span class="tsd-signature-symbol">-?: </span>);
+        children.push( <span class="tsd-signature-symbol">-?: </span> );
         break;
       default:
-        children.push(<span class="tsd-signature-symbol">: </span>);
+        children.push( <span class="tsd-signature-symbol">: </span> );
     }
 
-    children.push(renderType(context, type.templateType));
+    children.push( renderType( context, type.templateType ) );
 
     return (
       <>
@@ -196,7 +196,7 @@ const typeRenderers: {
       </>
     );
   },
-  "named-tuple-member"(context, type) {
+  "named-tuple-member"( context, type ) {
     return (
       <>
         {type.name}
@@ -205,19 +205,19 @@ const typeRenderers: {
         ) : (
           <span class="tsd-signature-symbol">: </span>
         )}
-        {renderType(context, type.element)}
+        {renderType( context, type.element )}
       </>
     );
   },
-  optional(context, type) {
+  optional( context, type ) {
     return (
       <>
-        {renderType(context, type.elementType)}
+        {renderType( context, type.elementType )}
         <span class="tsd-signature-symbol">?</span>
       </>
     );
   },
-  predicate(context, type) {
+  predicate( context, type ) {
     return (
       <>
         {!!type.asserts && <span class="tsd-signature-symbol">asserts </span>}
@@ -225,27 +225,27 @@ const typeRenderers: {
         {!!type.targetType && (
           <>
             <span class="tsd-signature-symbol"> is </span>
-            {renderType(context, type.targetType)}
+            {renderType( context, type.targetType )}
           </>
         )}
       </>
     );
   },
-  query(context, type) {
+  query( context, type ) {
     return (
       <>
         <span class="tsd-signature-symbol">typeof </span>
-        {renderType(context, type.queryType)}
+        {renderType( context, type.queryType )}
       </>
     );
   },
-  reference(context, type) {
+  reference( context, type ) {
     const reflection = type.reflection;
 
     let name: JSX.Element;
 
-    if (reflection) {
-      if (reflection.kindOf(ReflectionKind.TypeParameter)) {
+    if ( reflection ) {
+      if ( reflection.kindOf( ReflectionKind.TypeParameter ) ) {
         // Don't generate a link will always point to this page, but do set the kind.
         name = (
           <span class="tsd-signature-type" data-tsd-kind={reflection.kindString}>
@@ -253,11 +253,11 @@ const typeRenderers: {
           </span>
         );
       } else {
-        name = renderUniquePath(context, reflection);
+        name = renderUniquePath( context, reflection );
       }
     } else {
-      const externalUrl = context.attemptExternalResolution(type.getSymbol());
-      if (externalUrl) {
+      const externalUrl = context.attemptExternalResolution( type.getSymbol() );
+      if ( externalUrl ) {
         name = (
           <a href={externalUrl} class="tsd-signature-type external" target="_blank">
             {type.name}
@@ -268,13 +268,13 @@ const typeRenderers: {
       }
     }
 
-    if (type.typeArguments?.length) {
+    if ( type.typeArguments?.length ) {
       return (
         <>
           {name}
           <span class="tsd-signature-symbol">{"<"}</span>
-          {join(<span class="tsd-signature-symbol">, </span>, type.typeArguments, (item) =>
-            renderType(context, item)
+          {join( <span class="tsd-signature-symbol">, </span>, type.typeArguments, ( item ) =>
+            renderType( context, item )
           )}
           <span class="tsd-signature-symbol">{">"}</span>
         </>
@@ -283,47 +283,47 @@ const typeRenderers: {
 
     return name;
   },
-  reflection(context, type, { needsParens }) {
-    if (type.declaration.children) {
+  reflection( context, type, { needsParens } ) {
+    if ( type.declaration.children ) {
       // Object literal
       return (
         <>
           <span class="tsd-signature-symbol">{"{ "}</span>
-          {join(<span class="tsd-signature-symbol">; </span>, type.declaration.children, (item) => {
-            if (item.getSignature && item.setSignature) {
+          {join( <span class="tsd-signature-symbol">; </span>, type.declaration.children, ( item ) => {
+            if ( item.getSignature && item.setSignature ) {
               return (
                 <>
                   {item.name}
                   <span class="tsd-signature-symbol">: </span>
-                  {renderType(context, item.getSignature.type)}
+                  {renderType( context, item.getSignature.type )}
                 </>
               );
             }
 
-            if (item.getSignature) {
+            if ( item.getSignature ) {
               return (
                 <>
                   <span class="tsd-signature-symbol">get </span>
                   {item.name}
                   <span class="tsd-signature-symbol">(): </span>
-                  {renderType(context, item.getSignature.type)}
+                  {renderType( context, item.getSignature.type )}
                 </>
               );
             }
 
-            if (item.setSignature) {
+            if ( item.setSignature ) {
               return (
                 <>
                   <span class="tsd-signature-symbol">set </span>
                   {item.name}
                   <span class="tsd-signature-symbol">(</span>
-                  {item.setSignature.parameters?.map((item) => (
+                  {item.setSignature.parameters?.map( ( item ) => (
                     <>
                       {item.name}
                       <span class="tsd-signature-symbol">: </span>
-                      {renderType(context, item.type)}
+                      {renderType( context, item.type )}
                     </>
-                  ))}
+                  ) )}
                   <span class="tsd-signature-symbol">)</span>
                 </>
               );
@@ -333,34 +333,34 @@ const typeRenderers: {
               <>
                 {item.name}
                 <span class="tsd-signature-symbol">{item.flags.isOptional ? "?: " : ": "}</span>
-                {renderType(context, item.type)}
+                {renderType( context, item.type )}
               </>
             );
-          })}
+          } )}
           <span class="tsd-signature-symbol">{" }"}</span>
         </>
       );
     }
 
-    if (type.declaration.signatures?.length === 1) {
+    if ( type.declaration.signatures?.length === 1 ) {
       return (
         <>
           {needsParens && <span class="tsd-signature-symbol">(</span>}
-          {context.memberSignatureTitle(type.declaration.signatures[0], {
+          {context.memberSignatureTitle( type.declaration.signatures[ 0 ], {
             hideName: true,
             arrowStyle: true,
-          })}
+          } )}
           {needsParens && <span class="tsd-signature-symbol">)</span>}
         </>
       );
     }
 
-    if (type.declaration.signatures) {
+    if ( type.declaration.signatures ) {
       return (
         <>
           <span class="tsd-signature-symbol">{"{"} </span>
-          {join(<span class="tsd-signature-symbol">; </span>, type.declaration.signatures, (item) =>
-            context.memberSignatureTitle(item, { hideName: true })
+          {join( <span class="tsd-signature-symbol">; </span>, type.declaration.signatures, ( item ) =>
+            context.memberSignatureTitle( item, { hideName: true } )
           )}
           <span class="tsd-signature-symbol">{" }"}</span>
         </>
@@ -369,73 +369,73 @@ const typeRenderers: {
 
     return <span class="tsd-signature-symbol">{"{}"}</span>;
   },
-  rest(context, type) {
+  rest( context, type ) {
     return (
       <>
         <span class="tsd-signature-symbol">...</span>
-        {renderType(context, type.elementType)}
+        {renderType( context, type.elementType )}
       </>
     );
   },
-  "template-literal"(context, type) {
+  "template-literal"( context, type ) {
     return (
       <>
         <span class="tsd-signature-symbol">`</span>
         {type.head && <span class="tsd-signature-type">{type.head}</span>}
-        {type.tail.map((item) => (
+        {type.tail.map( ( item ) => (
           <>
             <span class="tsd-signature-symbol">{"${"}</span>
-            {renderType(context, item[0])}
+            {renderType( context, item[ 0 ] )}
             <span class="tsd-signature-symbol">{"}"}</span>
-            {item[1] && <span class="tsd-signature-type">{item[1]}</span>}
+            {item[ 1 ] && <span class="tsd-signature-type">{item[ 1 ]}</span>}
           </>
-        ))}
+        ) )}
         <span class="tsd-signature-symbol">`</span>
       </>
     );
   },
-  tuple(context, type) {
+  tuple( context, type ) {
     return (
       <>
         <span class="tsd-signature-symbol">[</span>
-        {join(<span class="tsd-signature-symbol">, </span>, type.elements, (item) => renderType(context, item))}
+        {join( <span class="tsd-signature-symbol">, </span>, type.elements, ( item ) => renderType( context, item ) )}
         <span class="tsd-signature-symbol">]</span>
       </>
     );
   },
-  typeOperator(context, type) {
+  typeOperator( context, type ) {
     return (
       <>
         <span class="tsd-signature-symbol">{type.operator} </span>
-        {renderType(context, type.target)}
+        {renderType( context, type.target )}
       </>
     );
   },
-  union(context, type, { needsParens }) {
+  union( context, type, { needsParens } ) {
     return (
       <>
         {!!needsParens && <span class="tsd-signature-symbol">(</span>}
-        {join(<span class="tsd-signature-symbol"> | </span>, type.types, (item) =>
-          renderType(context, item, { needsParens: true })
+        {join( <span class="tsd-signature-symbol"> | </span>, type.types, ( item ) =>
+          renderType( context, item, { needsParens: true } )
         )}
         {!!needsParens && <span class="tsd-signature-symbol">)</span>}
       </>
     );
   },
-  unknown(_context, type) {
+  unknown( _context, type ) {
     return <>{type.name}</>;
   },
 };
 
-function renderType(context: CustomThemeRenderContext, type: Type | undefined, options?: TypeInlinePartialsOptions) {
-  if (!type) {
+function renderType( context: CustomThemeRenderContext, type: Type | undefined, options?: TypeInlinePartialsOptions ) {
+  if ( !type ) {
     return <span class="tsd-signature-type">any</span>;
   }
 
-  const renderFn = typeRenderers[type.type];
-  return renderFn(context, type as never, options ?? {});
+  const renderFn = typeRenderers[ type.type ];
+  return renderFn( context, type as never, options ?? {} );
 }
 
-export function type(context: CustomThemeRenderContext, type: Type | undefined) {
-  return renderType(context, type, {});
+export function type( context: CustomThemeRenderContext, type: Type | undefined ) {
+  return renderType( context, type, {} );
 }

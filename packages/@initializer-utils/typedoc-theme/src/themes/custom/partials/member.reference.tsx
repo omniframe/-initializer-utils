@@ -1,7 +1,10 @@
 import { JSX, ReferenceReflection } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
-export const memberReference = ({ urlTo }: CustomThemeRenderContext, props: ReferenceReflection) => {
+export const memberReference = (
+  { urlTo }: CustomThemeRenderContext,
+  props: ReferenceReflection,
+) => {
   const referenced = props.tryGetTargetReflectionDeep();
 
   if (!referenced) {

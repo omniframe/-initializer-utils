@@ -1,13 +1,16 @@
-import { DefaultTheme } from 'typedoc';
+import { DefaultTheme, Renderer } from 'typedoc';
 import { CustomThemeRenderContext } from './CustomThemeRenderContext';
 
 export class CustomTheme extends DefaultTheme {
   private _contextCache?: CustomThemeRenderContext;
 
-  override getRenderContext() {
+  constructor( renderer: Renderer ) {
+    super( renderer );
+  }
+
+  override getRenderContext(): CustomThemeRenderContext {
     this._contextCache ||= new CustomThemeRenderContext(
-      // @ts-ignore <-- TODO: Investigate this error
-      this._markedPlugin,
+      this,
       this.application.options
     );
 

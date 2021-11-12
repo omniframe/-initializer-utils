@@ -1,24 +1,24 @@
 import { DeclarationReflection, JSX, ReflectionType } from 'typedoc';
-import { renderFlags, wbr } from 'typedoc/dist/lib/output/themes/lib';
+import { renderFlags, wbr } from '../copies';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
-export const parameter = (context: CustomThemeRenderContext, props: DeclarationReflection) => (
+export const parameter = ( context: CustomThemeRenderContext, props: DeclarationReflection ) => (
   <>
     <ul class="tsd-parameters">
       {!!props.signatures && (
         <li class="tsd-parameter-signature">
           <ul class={"tsd-signatures " + props.cssClasses}>
-            {props.signatures.map((item) => (
+            {props.signatures.map( ( item ) => (
               <li class="tsd-signature tsd-kind-icon">
-                {context.memberSignatureTitle(item, { hideName: true })}
+                {context.memberSignatureTitle( item, { hideName: true } )}
               </li>
-            ))}
+            ) )}
           </ul>
 
           <ul class="tsd-descriptions">
-            {props.signatures.map((item) => (
-              <li class="tsd-description">{context.memberSignatureBody(item, { hideSources: true })}</li>
-            ))}
+            {props.signatures.map( ( item ) => (
+              <li class="tsd-description">{context.memberSignatureBody( item, { hideSources: true } )}</li>
+            ) )}
           </ul>
         </li>
       )}
@@ -27,53 +27,53 @@ export const parameter = (context: CustomThemeRenderContext, props: DeclarationR
           <li class="tsd-parameter-index-signature">
             <h5>
               <span class="tsd-signature-symbol">[</span>
-              {props.indexSignature?.parameters?.map((item) => (
+              {props.indexSignature?.parameters?.map( ( item ) => (
                 <>
                   {!!item.flags.isRest && <span class="tsd-signature-symbol">...</span>}
                   {item.name}
                   {": "}
-                  {context.type(item.type)}
+                  {context.type( item.type )}
                 </>
-              ))}
+              ) )}
               <span class="tsd-signature-symbol">{"]: "}</span>
-              {context.type(props.indexSignature.type)}
+              {context.type( props.indexSignature.type )}
             </h5>
-            {context.comment(props.indexSignature)}
+            {context.comment( props.indexSignature )}
             {props.indexSignature.type instanceof ReflectionType &&
-              context.parameter(props.indexSignature.type.declaration)}
+              context.parameter( props.indexSignature.type.declaration )}
           </li>
         </>
       )}
-      {props.children?.map((item) => (
+      {props.children?.map( ( item ) => (
         <>
           {item.signatures ? (
             <li class="tsd-parameter">
               <h5>
                 {!!item.flags.isRest && <span class="tsd-signature-symbol">...</span>}
-                {wbr(item.name)}
+                {wbr( item.name )}
                 <span class="tsd-signature-symbol">{!!item.flags.isOptional && "?"}:</span>
                 function
               </h5>
 
-              {context.memberSignatures(item)}
+              {context.memberSignatures( item )}
             </li>
           ) : item.type ? (
             <>
               {/* standard type */}
               <li class="tsd-parameter">
                 <h5>
-                  {renderFlags(item.flags)}
+                  {renderFlags( item.flags )}
                   {!!item.flags.isRest && <span class="tsd-signature-symbol">...</span>}
-                  {wbr(item.name)}
+                  {wbr( item.name )}
                   <span class="tsd-signature-symbol">
                     {!!item.flags.isOptional && "?"}
                     {": "}
                   </span>
-                  {context.type(item.type)}
+                  {context.type( item.type )}
                 </h5>
-                {context.comment(item)}
-                {!!item.children && context.parameter(item)}
-                {item.type instanceof ReflectionType && context.parameter(item.type.declaration)}
+                {context.comment( item )}
+                {!!item.children && context.parameter( item )}
+                {item.type instanceof ReflectionType && context.parameter( item.type.declaration )}
               </li>
             </>
           ) : (
@@ -84,14 +84,14 @@ export const parameter = (context: CustomThemeRenderContext, props: DeclarationR
                   {/* getter */}
                   <li class="tsd-parameter">
                     <h5>
-                      {renderFlags(item.getSignature.flags)}
+                      {renderFlags( item.getSignature.flags )}
                       <span class="tsd-signature-symbol">get </span>
-                      {wbr(item.name)}
+                      {wbr( item.name )}
                       <span class="tsd-signature-symbol">(): </span>
-                      {context.type(item.getSignature.type)}
+                      {context.type( item.getSignature.type )}
                     </h5>
 
-                    {context.comment(item.getSignature)}
+                    {context.comment( item.getSignature )}
                   </li>
                 </>
               )}
@@ -100,29 +100,29 @@ export const parameter = (context: CustomThemeRenderContext, props: DeclarationR
                   {/* setter */}
                   <li class="tsd-parameter">
                     <h5>
-                      {renderFlags(item.setSignature.flags)}
+                      {renderFlags( item.setSignature.flags )}
                       <span class="tsd-signature-symbol">set </span>
-                      {wbr(item.name)}
+                      {wbr( item.name )}
                       <span class="tsd-signature-symbol">(</span>
-                      {item.setSignature.parameters?.map((item) => (
+                      {item.setSignature.parameters?.map( ( item ) => (
                         <>
                           {item.name}
                           <span class="tsd-signature-symbol">: </span>
-                          {context.type(item.type)}
+                          {context.type( item.type )}
                         </>
-                      ))}
+                      ) )}
                       <span class="tsd-signature-symbol">): </span>
-                      {context.type(item.setSignature.type)}
+                      {context.type( item.setSignature.type )}
                     </h5>
 
-                    {context.comment(item.setSignature)}
+                    {context.comment( item.setSignature )}
                   </li>
                 </>
               )}
             </>
           )}
         </>
-      ))}
+      ) )}
     </ul>
   </>
 );

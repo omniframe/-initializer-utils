@@ -1,8 +1,11 @@
 import { JSX, Reflection, PageEvent } from 'typedoc';
-import { hasTypeParameters, join } from 'typedoc/dist/lib/output/themes/lib';
+import { hasTypeParameters, join } from '../copies';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
-export const header = (context: CustomThemeRenderContext, props: PageEvent<Reflection>) => (
+export const header = (
+  context: CustomThemeRenderContext,
+  props: PageEvent<Reflection>
+) => (
   <header>
     <div class="tsd-page-toolbar">
       <div class="container">
@@ -73,7 +76,7 @@ export const header = (context: CustomThemeRenderContext, props: PageEvent<Refle
           {hasTypeParameters(props.model) && (
             <>
               {'<'}
-              {join(", ", props.model.typeParameters, (item) => item.name)}
+              {join(', ', props.model.typeParameters, (item) => item.name)}
               {'>'}
             </>
           )}

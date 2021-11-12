@@ -1,10 +1,13 @@
 import { JSX } from 'typedoc';
 import type { CustomThemeRenderContext } from '../CustomThemeRenderContext';
 
-export function analytics(context: CustomThemeRenderContext) {
+export const analytics = (context: CustomThemeRenderContext) => {
   const gaID = context.options.getValue('gaID');
   const gaSite = context.options.getValue('gaSite');
-  if (!gaID) return;
+
+  if (!gaID) {
+    return;
+  }
 
   return (
     <script>
